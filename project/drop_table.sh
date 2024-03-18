@@ -1,3 +1,4 @@
+#!/bin/sh
 
 # Making sure that only these hosts can communicate with each other: (h1, h2), (h2, h3)
 
