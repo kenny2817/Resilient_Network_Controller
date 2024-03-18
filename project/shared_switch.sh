@@ -1,10 +1,6 @@
 #!/bin/sh
 
-# parametri
-# 1 switch dpid
-# 2 switch dpid
-# 3 s*-eth*
-# 4 s*-eth*
+# creating the queues through s3 switch 
 
 echo ' ---------------------------------------------- '
 echo '*** Network Slicing: Creating 2 slices of 5 Mbps each ...'
