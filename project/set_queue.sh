@@ -13,7 +13,7 @@
 
 echo ' ---------------------------------------------- '
 echo '*** Network Slicing: Creating 2 slices of 5 Mbps each ...'
-echo 'Link_1: $1 - $4 ----- on interf: $1-$2'
+echo "Link_1: $1 - $4 ----- on interf: $1-$2"
 sudo ovs-vsctl set port $1-$2 qos=@newqos -- \
 --id=@newqos create QoS type=linux-htb \
 other-config:max-rate=10000000 \
@@ -23,7 +23,7 @@ queues:2=@2q -- \
 --id=@2q create queue other-config:min-rate=1000000 other-config:max-rate=5000000
 
 echo ' '
-echo 'Link_2: $4 - $1 ----- on interf: $4-$3'
+echo "Link_2: $4 - $1 ----- on interf: $4-$3"
 sudo ovs-vsctl set port $4-$3 qos=@newqos -- \
 --id=@newqos create QoS type=linux-htb \
 other-config:max-rate=10000000 \
@@ -33,7 +33,7 @@ queues:2=@2q -- \
 --id=@2q create queue other-config:min-rate=1000000 other-config:max-rate=5000000
 
 echo ' '
-echo 'Link_3: $4 - $7 ----- on interf: $4-$5'
+echo "Link_3: $4 - $7 ----- on interf: $4-$5"
 sudo ovs-vsctl set port $4-$5 qos=@newqos -- \
 --id=@newqos create QoS type=linux-htb \
 other-config:max-rate=10000000 \
@@ -43,7 +43,7 @@ queues:2=@2q -- \
 --id=@2q create queue other-config:min-rate=1000000 other-config:max-rate=5000000
 
 echo ' '
-echo 'Link_4: $7 - $4 ----- on interf: $7-$6'
+echo "Link_4: $7 - $4 ----- on interf: $7-$6"
 sudo ovs-vsctl set port $7-$6 qos=@newqos -- \
 --id=@newqos create QoS type=linux-htb \
 other-config:max-rate=10000000 \
@@ -66,5 +66,4 @@ sudo ovs-ofctl add-flow $1 ip,priority=65500,nw_src=10.0.0.3,nw_dst=10.0.0.4,idl
 sudo ovs-ofctl add-flow $4 ip,priority=65500,nw_src=10.0.0.3,nw_dst=10.0.0.4,idle_timeout=0,actions=set_queue:2,normal
 sudo ovs-ofctl add-flow $7 ip,priority=65500,nw_src=10.0.0.4,nw_dst=10.0.0.3,idle_timeout=0,actions=set_queue:2,normal
 sudo ovs-ofctl add-flow $4 ip,priority=65500,nw_src=10.0.0.4,nw_dst=10.0.0.3,idle_timeout=0,actions=set_queue:2,normal
-
 
