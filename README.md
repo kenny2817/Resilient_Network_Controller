@@ -1,6 +1,6 @@
 # Multi-tenant SDN Slicing in ComNetsEmu
 Software developed as part of the exam:
-*Softwarized and Virtualized Mobile Networks A.Y. 2019/2020 - UniTN*
+*Softwarized and Virtualized Mobile Networks A.Y. 2023/2024 - UniTN*
 
 **Alberto Messa** - _Mat. 226907_  
 **Samuele Camedda** - _Mat. 231163_  
