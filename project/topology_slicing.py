@@ -134,7 +134,7 @@ class TrafficSlicing(app_manager.RyuApp):
                     eth_dst=dst,
                     eth_type=ether_types.ETH_TYPE_IP,
                     ip_proto=0x11,  # udp
-                    udp_dst=self.slice_TCport,
+                    udp_dst=self.slice_upper_UDPport,
                 )
                 actions = [datapath.ofproto_parser.OFPActionOutput(out_port)]
                 self.add_flow(datapath, 2, match, actions)
@@ -148,7 +148,7 @@ class TrafficSlicing(app_manager.RyuApp):
                     eth_dst=dst,
                     eth_type=ether_types.ETH_TYPE_IP,
                     ip_proto=0x11,  # udp
-                    udp_dst=self.slice_TCport,
+                    udp_dst=self.slice_lower_UDPport,
                 )
                 actions = [datapath.ofproto_parser.OFPActionOutput(out_port)]
                 self.add_flow(datapath, 2, match, actions)
