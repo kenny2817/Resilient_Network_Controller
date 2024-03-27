@@ -44,16 +44,13 @@ class TrafficSlicing(app_manager.RyuApp):
             "00:00:00:00:00:04": { "00:00:00:00:00:03": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0 },
         }
 
-        self.queue_min_rate = 1000
-        self.queue_max_rate = 5000
-
         self.slice_ports = {
             2: {1: 2, 2: 3, 3: 3},
             4: {1: 2, 2: 3, 3: 3},
             5: {1: 2, 2: 2, 3: 3},
             7: {1: 2, 2: 2, 3: 3},
         }
-        self.end_switches = [2, 4, 5, 7]
+        
         self.slice_upper_UDPport = 9999
         self.slice_lower_UDPport = 9997
 
