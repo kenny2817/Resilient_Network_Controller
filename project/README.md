@@ -6,6 +6,12 @@ quello che prima era un semplice passaggio tra una porta e l'altra,
    ora devo settare il match per vedere che pacchetto è
 
 
+ryu-manager class_topology.py &
+
+
+sudo python3 network.py
+
+
 sudo ovs-vsctl del-controller s3
 
 
