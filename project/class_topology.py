@@ -1,6 +1,6 @@
 from ryu.base import app_manager
 from ryu.controller import ofp_event
-from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER
+from ryu.controller.handler import CONFIG_DISPATCHER, MAIN_DISPATCHER, DEAD_DISPATCHER 
 from ryu.controller.handler import set_ev_cls
 from ryu.ofproto import ofproto_v1_3
 from ryu.lib.packet import packet
@@ -21,6 +21,8 @@ class TrafficSlicing(app_manager.RyuApp):
         self.DIV_sw = [ 5, 7 ]
         self.QUEUE_sw = [ 3 ]
         self.DIV_QUEUE_sw = [ 2, 4 ]
+
+        self.live_switches = set()
 
         self.mac_to_port = {
             2: {
@@ -244,3 +246,19 @@ class TrafficSlicing(app_manager.RyuApp):
                 self.add_flow(datapath, 1, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
                 self.logger.info("UDP\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
+
+    @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
+    def switch_added_handler(self, ev):
+        datapath = ev.msg.datapath
+        dpid = datapath.id
+        self.live_switches.add(dpid)
+        self.logger.info("Switch %s is now connected.", dpid)
+
+    @set_ev_cls(ofp_event.EventOFPStateChange, DEAD_DISPATCHER)
+    def switch_removed_handler(self, ev):
+        datapath = ev.datapath
+        dpid = datapath.id
+        if ev.state == DEAD_DISPATCHER:
+            self.live_switches.discard(dpid)
+            self.logger.info("Switch %s has disconnected.", dpid)
+
