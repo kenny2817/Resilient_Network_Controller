@@ -6,6 +6,10 @@ quello che prima era un semplice passaggio tra una porta e l'altra,
    ora devo settare il match per vedere che pacchetto è
 
 
+sudo ovs-vsctl del-controller s3
+sudo ovs-vsctl set-controller s3 tcp:127.0.0.1:6633
+
+
 h0 ---10Mps---                              ---10Mps--- h1
              |                              |
              |                              |
