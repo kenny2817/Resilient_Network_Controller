@@ -73,6 +73,9 @@ sudo ovs-vsctl set-controller s6 tcp:127.0.0.1:6633
 
 ## rappresentazione network
 
+<p align="center">
+  <img src="images/bash network.png" width="400">
+</p>
 
                    |---10Mbps--- s1 ---10Mbps---|  
                    |                            |  
