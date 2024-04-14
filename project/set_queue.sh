@@ -54,23 +54,4 @@ queues:2=@2q -- \
 
 echo '*** End of Creating the Slices ...'
 echo ' ---------------------------------------------- '
-
-: '
-# Mapping the $1 virtual queues to hosts:
-# (h1, h2) --> queue1
-sudo ovs-ofctl add-flow $1 ip,priority=10,nw_src=10.0.0.1,nw_dst=10.0.0.2,tcp,idle_timeout=0,actions=set_queue:1,output:3
-sudo ovs-ofctl add-flow $1 ip,priority=10,nw_src=10.0.0.1,nw_dst=10.0.0.2,icmp,idle_timeout=0,actions=set_queue:1,output:3
-
-sudo ovs-ofctl add-flow $4 ip,priority=10,nw_src=10.0.0.1,nw_dst=10.0.0.2,idle_timeout=0,actions=set_queue:1,normal
-
-sudo ovs-ofctl add-flow $7 ip,priority=10,nw_src=10.0.0.2,nw_dst=10.0.0.1,tcp,idle_timeout=0,actions=set_queue:1,output:3
-sudo ovs-ofctl add-flow $7 ip,priority=10,nw_src=10.0.0.2,nw_dst=10.0.0.1,icmp,idle_timeout=0,actions=set_queue:1,output:3
-
-sudo ovs-ofctl add-flow $4 ip,priority=10,nw_src=10.0.0.2,nw_dst=10.0.0.1,idle_timeout=0,actions=set_queue:1,normal
-# (h3, h4) --> queue2
-sudo ovs-ofctl add-flow $1 ip,priority=50,nw_src=10.0.0.3,nw_dst=10.0.0.4,idle_timeout=0,actions=set_queue:2,output:3
-sudo ovs-ofctl add-flow $1 ip,priority=50,nw_src=10.0.0.3,nw_dst=10.0.0.4,idle_timeout=0,actions=set_queue:2,output:3
-sudo ovs-ofctl add-flow $4 ip,priority=50,nw_src=10.0.0.3,nw_dst=10.0.0.4,idle_timeout=0,actions=set_queue:2,normal
-sudo ovs-ofctl add-flow $7 ip,priority=50,nw_src=10.0.0.4,nw_dst=10.0.0.3,idle_timeout=0,actions=set_queue:2,output:3
-sudo ovs-ofctl add-flow $4 ip,priority=50,nw_src=10.0.0.4,nw_dst=10.0.0.3,idle_timeout=0,actions=set_queue:2,normal
-'
+echo ' '

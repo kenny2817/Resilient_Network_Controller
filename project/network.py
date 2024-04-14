@@ -5,7 +5,6 @@ from mininet.net import Mininet
 from mininet.node import OVSKernelSwitch, RemoteController
 from mininet.link import TCLink
 from mininet.cli import CLI
-import subprocess
 
 class MyTopo(Topo):
     def __init__(self):
@@ -14,7 +13,7 @@ class MyTopo(Topo):
 
         host_config = dict(inNamespace=True)
         switch_link_config = dict()
-        host_link_config = dict()
+        host_link_config = dict(bw=10)
 
         # Create hosts
         for i in range(1,5):
@@ -57,9 +56,6 @@ if __name__ == "__main__":
     net.addController(controller)
     net.build()
     net.start()
-
-    subprocess.call("./drop_table.sh")
-    subprocess.call(["./set_queue.sh", "s2", "eth3", "eth1", "s3", "eth2", "eth3", "s4"])
 
     CLI(net)
     net.stop()
