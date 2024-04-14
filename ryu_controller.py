@@ -21,9 +21,12 @@ class TrafficSlicing(app_manager.RyuApp):
     def __init__(self, *args, **kwargs):
         super(TrafficSlicing, self).__init__(*args, **kwargs)
 
+        # handler must be activated after the network is created
         self.switch_handler_activated = False
+        # set of working switches
         self.live_switches = set()
 
+        # variables to store the scenario
         self.switches = []
         self.exist_queue = False
         self.queue = None
@@ -35,12 +38,13 @@ class TrafficSlicing(app_manager.RyuApp):
         self.mac_to_queue_id = {}
         self.slice_ports = {}
 
+        # specific UDP ports for slicing
         self.slice_upper_UDPport = 9999
         self.slice_lower_UDPport = 9997
 
         self.logger.info("Waiting for network creation...")
         def network_creation_thread():
-            # you have 10 second to start the network using the command:
+            # ATTENTION: you have 10 second to start the network using the comand:
             # sudo python3 network.py
             time.sleep(10)
             self.set_scenario()
@@ -60,13 +64,14 @@ class TrafficSlicing(app_manager.RyuApp):
         # clear tables        
         subprocess.call("./empty_table.sh")
 
-        # Convert the set of switch numbers to a list of strings
+        # convert the set of switch numbers to a list of strings
         switch_numbers = [str(num) for num in self.switches]
         subprocess.call(["./set_controller.sh"] + switch_numbers)        
 
-        # set rules
+        # set drop rules to avoid unwanted communication between hosts
         subprocess.call("./set_drop_rules_table.sh")
 
+        # if exist_queue is True, set the queue
         if self.exist_queue:
             subprocess.call(["./set_queue.sh", 
                             self.queue.switch1, 
@@ -78,6 +83,7 @@ class TrafficSlicing(app_manager.RyuApp):
                             self.queue.switch3
                             ])
 
+        # set the rules for the switches
         self.FLOOD_sw = self.scenario.value.FLOOD_sw
         self.DIV_sw = self.scenario.value.DIV_sw
         self.QUEUE_sw = self.scenario.value.QUEUE_sw
@@ -88,9 +94,11 @@ class TrafficSlicing(app_manager.RyuApp):
         self.slice_ports = self.scenario.value.slice_ports
         
 
+    # it's used as a thread with a mutex to avoid scenario creation conflicts
     def set_scenario(self):
         self.switch_handler_activated = False
         print("switch_handler_activated = False")
+        # remove queue if it exists
         if self.exist_queue:
             subprocess.call(["./remove_queue.sh", 
                         self.queue.switch1, 
@@ -102,6 +110,7 @@ class TrafficSlicing(app_manager.RyuApp):
                         self.queue.switch3
                         ])
 
+        # find the scenario
         live_switches = sorted(self.live_switches)
         
         if live_switches == [1, 2, 3, 4, 5, 6, 7]:
@@ -129,54 +138,13 @@ class TrafficSlicing(app_manager.RyuApp):
             print("All is broken, registered switches: ", live_switches)
             self.scenario = EnumRules.ALL_BROKEN
         
+        # set rules
         self.setRules()
         self.switch_handler_activated = True
         print("switch_handler_activated = True")
 
 
-
-    def udp_match(self, parser, in_port, src, dst, pkt):
-        '''
-        if (pkt.get_protocol(udp.udp).dst_port == self.slice_upper_UDPport
-            or pkt.get_protocol(udp.udp).dst_port == self.slice_lower_UDPport):
-            match = parser.OFPMatch(
-                in_port=in_port,
-                eth_dst=dst,
-                eth_type=ether_types.ETH_TYPE_IP,
-                ip_proto=0x11,  # udp
-                udp_dst=pkt.get_protocol(udp.udp).dst_port,
-            )
-            return match
-        '''
-        match = parser.OFPMatch(
-            in_port=in_port,
-            eth_src=src,
-            eth_dst=dst,
-            eth_type=ether_types.ETH_TYPE_IP,
-            ip_proto=0x11,  # udp
-            udp_dst=pkt.get_protocol(udp.udp).dst_port,
-        )
-        return match
-
-    def set_match(self, parser, in_port, src, dst, pkt):
-        if pkt.get_protocol(udp.udp):
-            return self.udp_match(parser, in_port, src, dst, pkt)
-        elif pkt.get_protocol(tcp.tcp):
-            ip_proto = 0x06
-        elif pkt.get_protocol(icmp.icmp):
-            ip_proto = 0x01
-
-        match = parser.OFPMatch(
-            in_port=in_port,
-            eth_src=src,
-            eth_dst=dst,
-            eth_type=ether_types.ETH_TYPE_IP,
-            ip_proto=ip_proto,
-        )
-        return match
-
-
-    
+    # handler for new switches
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_added_handler(self, ev):
         datapath = ev.msg.datapath
@@ -188,8 +156,7 @@ class TrafficSlicing(app_manager.RyuApp):
             thread = threading.Thread(target=self.set_scenario)
             thread.start()
 
-    
-    
+    #handler for removed switches
     @set_ev_cls(ofp_event.EventOFPStateChange, DEAD_DISPATCHER)
     def switch_removed_handler(self, ev):
         datapath = ev.datapath
@@ -202,6 +169,33 @@ class TrafficSlicing(app_manager.RyuApp):
                 thread = threading.Thread(target=self.set_scenario)
                 thread.start()
 
+
+    # set the match for UDP-TCP-ICMP
+    def set_match(self, parser, in_port, src, dst, pkt):
+        if pkt.get_protocol(udp.udp):
+            match = parser.OFPMatch(
+                in_port=in_port,
+                eth_src=src,
+                eth_dst=dst,
+                eth_type=ether_types.ETH_TYPE_IP,
+                ip_proto=0x11, # udp
+                udp_dst=pkt.get_protocol(udp.udp).dst_port,
+            )
+        else:
+            if pkt.get_protocol(tcp.tcp):
+                ip_proto = 0x06 # tcp
+            elif pkt.get_protocol(icmp.icmp):
+                ip_proto = 0x01 # icmp
+
+            match = parser.OFPMatch(
+                in_port=in_port,
+                eth_src=src,
+                eth_dst=dst,
+                eth_type=ether_types.ETH_TYPE_IP,
+                ip_proto=ip_proto,
+            )
+
+        return match
 
 
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
