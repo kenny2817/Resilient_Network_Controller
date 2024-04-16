@@ -1,4 +1,4 @@
-## Comandi di inizzializzazione
+## Comandi di inizializzazione
 Prima attivare il controller. 
 ATTENZIONE: dopo l'avvio del comando si hanno 10 secondi per creare la network
 ```bash
