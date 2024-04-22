@@ -289,7 +289,7 @@ class TrafficSlicing(app_manager.RyuApp):
             if (pkt.get_protocol(udp.udp) and pkt.get_protocol(udp.udp).dst_port == self.slice_lower_UDPport):
                 slice_number = 3
                 out_port = self.slice_ports[dpid][slice_number]
-                match = self.udp_match(parser, in_port, src, dst, pkt)
+                match = self.set_match(parser, in_port, src, dst, pkt)
                 actions = [parser.OFPActionOutput(out_port)]
                 self.add_flow(datapath, 10, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
@@ -322,7 +322,7 @@ class TrafficSlicing(app_manager.RyuApp):
             elif (pkt.get_protocol(udp.udp) and pkt.get_protocol(udp.udp).dst_port == self.slice_upper_UDPport):
                 slice_number = 1
                 out_port = self.slice_ports[dpid][slice_number]
-                match = self.udp_match(parser, in_port, src, dst, pkt)
+                match = self.set_match(parser, in_port, src, dst, pkt)
                 actions = [parser.OFPActionOutput(out_port)]
                 self.add_flow(datapath, 10, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
