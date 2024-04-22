@@ -14,7 +14,7 @@ class QueueConfigurations:
         self.port4 = port4
         self.switch3 = switch3
 
-# prendere come esempio
+
 class AllGood:
     def __init__(self):
 
@@ -54,87 +54,75 @@ class AllGood:
             7: {1: 2, 2: 2, 3: 3},
         }
 
-# da implementare
+ 
 class BrokenSwitch_s1:
     def __init__(self):
         
         self.switches = [2, 3, 4, 5, 6, 7]
-        self.exist_queue = True
-        self.queue = QueueConfigurations("s2", "eth3", "eth1", "s3", "eth2", "eth3", "s4")
+        self.exist_queue = False
+        self.queue = None
 
-        self.FLOOD_sw = [1, 6]
-        self.DIV_sw = [5, 7]
-        self.QUEUE_sw = [3]
-        self.DIV_QUEUE_sw = [2, 4]
+        self.FLOOD_sw = [3, 6]
+        self.DIV_sw = []
+        self.QUEUE_sw = []
+        self.DIV_QUEUE_sw = []
         
         self.mac_to_port = {
             2: {
+                "00:00:00:00:00:02": 3,
                 "00:00:00:00:00:01": 1,
-                "00:00:00:00:00:03": 4,
             },
             4: {
                 "00:00:00:00:00:02": 1,
-                "00:00:00:00:00:04": 4,
+                "00:00:00:00:00:01": 3,
             },
-            5: {"00:00:00:00:00:03": 1},
-            7: {"00:00:00:00:00:04": 1},
-        }
-        
-        self.mac_to_queue_id = {
-            "00:00:00:00:00:01": {"00:00:00:00:00:02": 1, "00:00:00:00:00:03": 0, "00:00:00:00:00:04": 0},
-            "00:00:00:00:00:02": {"00:00:00:00:00:01": 1, "00:00:00:00:00:03": 0, "00:00:00:00:00:04": 0},
-            "00:00:00:00:00:03": {"00:00:00:00:00:04": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0},
-            "00:00:00:00:00:04": {"00:00:00:00:00:03": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0},
-        }
-        
-        self.slice_ports = {
-            2: {1: 2, 2: 3, 3: 3},
-            4: {1: 2, 2: 3, 3: 3},
-            5: {1: 2, 2: 2, 3: 3},
-            7: {1: 2, 2: 2, 3: 3},
+            5: {"00:00:00:00:00:04": 3,
+                "00:00:00:00:00:03": 1,
+            },
+            7: {"00:00:00:00:00:04": 1,
+                "00:00:00:00:00:03": 3,
+            },
         }
 
-# da implementare        
+        self.mac_to_queue_id = {}
+
+        self.slice_ports = {}
+
+     
 class BrokenSwitch_s3:
     def __init__(self):
         
         self.switches = [1, 2, 4, 5, 6, 7]
-        self.exist_queue = True
-        self.queue = QueueConfigurations("s2", "eth3", "eth1", "s3", "eth2", "eth3", "s4")
+        self.exist_queue = False
+        self.queue = None
 
         self.FLOOD_sw = [1, 6]
-        self.DIV_sw = [5, 7]
-        self.QUEUE_sw = [3]
-        self.DIV_QUEUE_sw = [2, 4]
+        self.DIV_sw = []
+        self.QUEUE_sw = []
+        self.DIV_QUEUE_sw = []
         
         self.mac_to_port = {
             2: {
+                "00:00:00:00:00:02": 2,
                 "00:00:00:00:00:01": 1,
-                "00:00:00:00:00:03": 4,
             },
             4: {
                 "00:00:00:00:00:02": 1,
-                "00:00:00:00:00:04": 4,
+                "00:00:00:00:00:01": 2,
             },
-            5: {"00:00:00:00:00:03": 1},
-            7: {"00:00:00:00:00:04": 1},
-        }
-        
-        self.mac_to_queue_id = {
-            "00:00:00:00:00:01": {"00:00:00:00:00:02": 1, "00:00:00:00:00:03": 0, "00:00:00:00:00:04": 0},
-            "00:00:00:00:00:02": {"00:00:00:00:00:01": 1, "00:00:00:00:00:03": 0, "00:00:00:00:00:04": 0},
-            "00:00:00:00:00:03": {"00:00:00:00:00:04": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0},
-            "00:00:00:00:00:04": {"00:00:00:00:00:03": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0},
-        }
-        
-        self.slice_ports = {
-            2: {1: 2, 2: 3, 3: 3},
-            4: {1: 2, 2: 3, 3: 3},
-            5: {1: 2, 2: 2, 3: 3},
-            7: {1: 2, 2: 2, 3: 3},
+            5: {"00:00:00:00:00:04": 3,
+                "00:00:00:00:00:03": 1,
+            },
+            7: {"00:00:00:00:00:04": 1,
+                "00:00:00:00:00:03": 3,
+            },
         }
 
-# da controllare
+        self.mac_to_queue_id = {}
+
+        self.slice_ports = {}
+
+ 
 class BrokenSwitch_s6:
     def __init__(self):
         
@@ -174,30 +162,28 @@ class BrokenSwitch_s6:
 
         self.slice_ports = {}
 
-# da implementare
+ 
 class BrokenSwitch_s1_s3:
     def __init__(self):
         
         self.switches = [2, 4, 5, 6, 7]
         self.exist_queue = True
-        self.queue = QueueConfigurations("s2", "eth3", "eth1", "s3", "eth2", "eth3", "s4")
+        self.queue = QueueConfigurations("s5", "eth3", "eth1", "s6", "eth2", "eth3", "s7")
 
-        self.FLOOD_sw = [1, 6]
-        self.DIV_sw = [5, 7]
-        self.QUEUE_sw = [3]
-        self.DIV_QUEUE_sw = [2, 4]
+        self.FLOOD_sw = []
+        self.DIV_sw = []
+        self.QUEUE_sw = [6]
+        self.DIV_QUEUE_sw = [5, 7]
         
         self.mac_to_port = {
             2: {
                 "00:00:00:00:00:01": 1,
-                "00:00:00:00:00:03": 4,
+                "00:00:00:00:00:02": 4,
             },
             4: {
                 "00:00:00:00:00:02": 1,
-                "00:00:00:00:00:04": 4,
+                "00:00:00:00:00:01": 4,
             },
-            5: {"00:00:00:00:00:03": 1},
-            7: {"00:00:00:00:00:04": 1},
         }
         
         self.mac_to_queue_id = {
@@ -207,37 +193,30 @@ class BrokenSwitch_s1_s3:
             "00:00:00:00:00:04": {"00:00:00:00:00:03": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0},
         }
         
-        self.slice_ports = {
-            2: {1: 2, 2: 3, 3: 3},
-            4: {1: 2, 2: 3, 3: 3},
-            5: {1: 2, 2: 2, 3: 3},
-            7: {1: 2, 2: 2, 3: 3},
-        }
+        self.slice_ports = {}
 
-# da implementare
+ 
 class BrokenSwitch_s1_s6:
     def __init__(self):
         
-        self.switches = [2, 3, 5, 6, 7]
+        self.switches = [2, 3, 4, 5, 7]
         self.exist_queue = True
         self.queue = QueueConfigurations("s2", "eth3", "eth1", "s3", "eth2", "eth3", "s4")
 
-        self.FLOOD_sw = [1, 6]
-        self.DIV_sw = [5, 7]
+        self.FLOOD_sw = []
+        self.DIV_sw = []
         self.QUEUE_sw = [3]
         self.DIV_QUEUE_sw = [2, 4]
         
         self.mac_to_port = {
-            2: {
-                "00:00:00:00:00:01": 1,
-                "00:00:00:00:00:03": 4,
+            5: {
+                "00:00:00:00:00:03": 1,
+                "00:00:00:00:00:04": 2,
             },
-            4: {
-                "00:00:00:00:00:02": 1,
-                "00:00:00:00:00:04": 4,
+            7: {
+                "00:00:00:00:00:03": 2,
+                "00:00:00:00:00:04": 1,
             },
-            5: {"00:00:00:00:00:03": 1},
-            7: {"00:00:00:00:00:04": 1},
         }
         
         self.mac_to_queue_id = {
@@ -247,37 +226,30 @@ class BrokenSwitch_s1_s6:
             "00:00:00:00:00:04": {"00:00:00:00:00:03": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0},
         }
         
-        self.slice_ports = {
-            2: {1: 2, 2: 3, 3: 3},
-            4: {1: 2, 2: 3, 3: 3},
-            5: {1: 2, 2: 2, 3: 3},
-            7: {1: 2, 2: 2, 3: 3},
-        }
+        self.slice_ports = {}
 
-# da implementare
+ 
 class BrokenSwitch_s3_s6:
     def __init__(self):
         
         self.switches = [1, 2, 4, 5, 7]
         self.exist_queue = True
-        self.queue = QueueConfigurations("s2", "eth3", "eth1", "s3", "eth2", "eth3", "s4")
+        self.queue = QueueConfigurations("s2", "eth2", "eth1", "s1", "eth2", "eth2", "s4")
 
-        self.FLOOD_sw = [1, 6]
-        self.DIV_sw = [5, 7]
-        self.QUEUE_sw = [3]
+        self.FLOOD_sw = []
+        self.DIV_sw = []
+        self.QUEUE_sw = [1]
         self.DIV_QUEUE_sw = [2, 4]
         
         self.mac_to_port = {
-            2: {
-                "00:00:00:00:00:01": 1,
-                "00:00:00:00:00:03": 4,
+            5: {
+                "00:00:00:00:00:03": 1,
+                "00:00:00:00:00:04": 2,
             },
-            4: {
-                "00:00:00:00:00:02": 1,
-                "00:00:00:00:00:04": 4,
+            7: {
+                "00:00:00:00:00:03": 2,
+                "00:00:00:00:00:04": 1,
             },
-            5: {"00:00:00:00:00:03": 1},
-            7: {"00:00:00:00:00:04": 1},
         }
         
         self.mac_to_queue_id = {
@@ -287,52 +259,41 @@ class BrokenSwitch_s3_s6:
             "00:00:00:00:00:04": {"00:00:00:00:00:03": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0},
         }
         
-        self.slice_ports = {
-            2: {1: 2, 2: 3, 3: 3},
-            4: {1: 2, 2: 3, 3: 3},
-            5: {1: 2, 2: 2, 3: 3},
-            7: {1: 2, 2: 2, 3: 3},
-        }
+        self.slice_ports = {}
 
-# da implementare
+
 class AllBroken:
     def __init__(self):
         
         self.switches = [ ]
-        self.exist_queue = True
-        self.queue = QueueConfigurations("s2", "eth3", "eth1", "s3", "eth2", "eth3", "s4")
+        self.exist_queue = False
+        self.queue = None
 
-        self.FLOOD_sw = [1, 6]
-        self.DIV_sw = [5, 7]
-        self.QUEUE_sw = [3]
-        self.DIV_QUEUE_sw = [2, 4]
+        self.FLOOD_sw = []
+        self.DIV_sw = []
+        self.QUEUE_sw = []
+        self.DIV_QUEUE_sw = []
         
         self.mac_to_port = {
-            2: {
-                "00:00:00:00:00:01": 1,
-                "00:00:00:00:00:03": 4,
+           2: {
+                "00:00:00:00:00:01": 0,
+                "00:00:00:00:00:02": 0,
             },
             4: {
-                "00:00:00:00:00:02": 1,
-                "00:00:00:00:00:04": 4,
+                "00:00:00:00:00:02": 0,
+                "00:00:00:00:00:01": 0,
             },
-            5: {"00:00:00:00:00:03": 1},
-            7: {"00:00:00:00:00:04": 1},
+            5: {"00:00:00:00:00:03": 0,
+                "00:00:00:00:00:04": 0,
+            },
+            7: {"00:00:00:00:00:04": 0,
+                "00:00:00:00:00:03": 0,
+            },
         }
         
-        self.mac_to_queue_id = {
-            "00:00:00:00:00:01": {"00:00:00:00:00:02": 1, "00:00:00:00:00:03": 0, "00:00:00:00:00:04": 0},
-            "00:00:00:00:00:02": {"00:00:00:00:00:01": 1, "00:00:00:00:00:03": 0, "00:00:00:00:00:04": 0},
-            "00:00:00:00:00:03": {"00:00:00:00:00:04": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0},
-            "00:00:00:00:00:04": {"00:00:00:00:00:03": 2, "00:00:00:00:00:01": 0, "00:00:00:00:00:02": 0},
-        }
+        self.mac_to_queue_id = {}
         
-        self.slice_ports = {
-            2: {1: 2, 2: 3, 3: 3},
-            4: {1: 2, 2: 3, 3: 3},
-            5: {1: 2, 2: 2, 3: 3},
-            7: {1: 2, 2: 2, 3: 3},
-        }
+        self.slice_ports = {}
 
 
 class EnumRules(Enum):
