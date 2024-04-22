@@ -46,7 +46,7 @@ class TrafficSlicing(app_manager.RyuApp):
         def network_creation_thread():
             # ATTENTION: you have 10 second to start the network using the comand:
             # sudo python3 network.py
-            time.sleep(10)
+            time.sleep(2)
             self.set_scenario()
             self.logger.info("Network created. Switch handlers are now active.")          
 
