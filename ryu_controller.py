@@ -128,7 +128,7 @@ class TrafficSlicing(app_manager.RyuApp):
         elif live_switches == [2, 4, 5, 6, 7]:
             print("Switches 1 and 3 are broken, registered switches: ", live_switches)
             self.scenario = EnumRules.BROKEN_SWITCH_s1_s3
-        elif live_switches == [2, 3, 5, 6, 7]:
+        elif live_switches == [2, 3, 4, 5, 7]:
             print("Switches 1 and 6 are broken, registered switches: ", live_switches)
             self.scenario = EnumRules.BROKEN_SWITCH_s1_s6
         elif live_switches == [1, 2, 4, 5, 7]:
@@ -266,7 +266,7 @@ class TrafficSlicing(app_manager.RyuApp):
             match = parser.OFPMatch(eth_dst=dst)
             self.add_flow(datapath, 100, match, actions)
             self._send_package(msg, datapath, in_port, actions)
-            self.logger.info("mac_to_port\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
+            #self.logger.info("mac_to_port\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
 
         elif dpid in self.FLOOD_sw:
             out_port = ofproto.OFPP_FLOOD
@@ -274,7 +274,7 @@ class TrafficSlicing(app_manager.RyuApp):
             match = parser.OFPMatch(in_port=in_port)
             self.add_flow(datapath, 1, match, actions)
             self._send_package(msg, datapath, in_port, actions)
-            self.logger.info("FLOOD\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
+            #self.logger.info("FLOOD\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
 
         elif dpid in self.QUEUE_sw:
             if (src in self.mac_to_queue_id and dst in self.mac_to_queue_id[src] and self.mac_to_queue_id[src][dst] != 0):
@@ -283,8 +283,8 @@ class TrafficSlicing(app_manager.RyuApp):
                 match = self.set_match(parser, in_port, src, dst, pkt)
                 self.add_flow(datapath, 10, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
-                self.logger.info("QUEUE\t\t ---- s%s in_port=%s", dpid, in_port)
-        
+                #self.logger.info("QUEUE\t\t ---- s%s in_port=%s", dpid, in_port)
+
         elif dpid in self.DIV_sw:
             if (pkt.get_protocol(udp.udp) and pkt.get_protocol(udp.udp).dst_port == self.slice_lower_UDPport):
                 slice_number = 3
@@ -293,7 +293,7 @@ class TrafficSlicing(app_manager.RyuApp):
                 actions = [parser.OFPActionOutput(out_port)]
                 self.add_flow(datapath, 10, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
-                self.logger.info("UPD DOWN \t---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
+                #self.logger.info("UPD DOWN \t---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
 
             elif (pkt.get_protocol(udp.udp)
                   or pkt.get_protocol(tcp.tcp) 
@@ -304,11 +304,27 @@ class TrafficSlicing(app_manager.RyuApp):
                 actions = [parser.OFPActionOutput(out_port)]
                 self.add_flow(datapath, 1, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
-                self.logger.info("UDP\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
+                #self.logger.info("UDP\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
 
         elif dpid in self.DIV_QUEUE_sw:
+            # if scenario is BROKEN_SWITCH_s1_s3, BROKEN_SWITCH_s1_s6 or BROKEN_SWITCH_s3_s6
+            if (self.scenario == EnumRules.BROKEN_SWITCH_s1_s3 or self.scenario == EnumRules.BROKEN_SWITCH_s1_s6 or self.scenario == EnumRules.BROKEN_SWITCH_s3_s6):
+                if (dst == "00:00:00:00:00:01" or dst == "00:00:00:00:00:02" or dst == "00:00:00:00:00:03" or dst == "00:00:00:00:00:04"):
+                    queue_id = 0
+                    if (dst == "00:00:00:00:00:01" or dst == "00:00:00:00:00:02"):
+                        queue_id = 1
+                    elif (dst == "00:00:00:00:00:03" or dst == "00:00:00:00:00:04"):
+                        queue_id = 2
+                    slice_number = 1
+                    out_port = self.slice_ports[dpid][slice_number]
+                    actions = [parser.OFPActionSetQueue(queue_id),parser.OFPActionOutput(out_port)]
+                    match = self.set_match(parser, in_port, src, dst, pkt)
+                    self.add_flow(datapath, 50, match, actions)
+                    self._send_package(msg, datapath, in_port, actions)
+                    #self.logger.info("QUEUE\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)            
+
             # to queue 2
-            if (dst == "00:00:00:00:00:03" or dst == "00:00:00:00:00:04"):
+            elif (dst == "00:00:00:00:00:03" or dst == "00:00:00:00:00:04"):
                 queue_id = 2
                 slice_number = 2
                 out_port = self.slice_ports[dpid][slice_number]
@@ -316,7 +332,7 @@ class TrafficSlicing(app_manager.RyuApp):
                 match = self.set_match(parser, in_port, src, dst, pkt)
                 self.add_flow(datapath, 50, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
-                self.logger.info("QUEUE\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
+                #self.logger.info("QUEUE\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
             
             # to upper slice
             elif (pkt.get_protocol(udp.udp) and pkt.get_protocol(udp.udp).dst_port == self.slice_upper_UDPport):
@@ -326,7 +342,7 @@ class TrafficSlicing(app_manager.RyuApp):
                 actions = [parser.OFPActionOutput(out_port)]
                 self.add_flow(datapath, 10, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
-                self.logger.info("UPD UP \t---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
+                #self.logger.info("UPD UP \t---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
 
             # to queue 1
             elif (pkt.get_protocol(udp.udp)
@@ -339,4 +355,4 @@ class TrafficSlicing(app_manager.RyuApp):
                 match = self.set_match(parser, in_port, src, dst, pkt)
                 self.add_flow(datapath, 1, match, actions)
                 self._send_package(msg, datapath, in_port, actions)
-                self.logger.info("UDP\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)
+                #self.logger.info("UDP\t\t ---- s%s in_port=%s out_port=%s", dpid, in_port, out_port)

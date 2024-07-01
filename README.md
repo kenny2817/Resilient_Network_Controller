@@ -1,14 +1,10 @@
 ## Comandi di inizializzazione
-Prima attivare il controller. 
-ATTENZIONE: dopo l'avvio del comando si hanno 10 secondi per creare la network
+Per avviare la network e il controller bisogna solamente eseguire lo script:
 ```bash
-ryu-manager ryu_controller.py &
+./run.sh
 ```
 
-Creare la network:
-```bash
-sudo python3 network.py
-```
+Esso si occuperà di impostare i permessi necessari ai vari script, convertire i file .sh in formato unix, avviare il controller in background e creare la network.
 
 ## Descrizione network
 Gli host sono collegati a coppie:
@@ -56,11 +52,6 @@ Volendo si possono controllare le regole di tutte le switch tables con lo script
 ```
 
 ## Comandi bash per cambiare scenario
-
-Per ora gli scenari funzionanti correttamente sono:
- - tutto funzionante
- - rotto s6
-
 # disconnettere switch
 ```bash
 sudo ovs-vsctl del-controller s6
