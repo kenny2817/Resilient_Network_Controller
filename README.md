@@ -78,18 +78,18 @@ there are 7 switches (s) that create 3 channels
 ```
                    |---10Mbps--- s1 ---10Mbps---|
                    |                            |
-h0 ----10Mbps---- s2                            s4 ----10Mbps---- h1
+h1 ----10Mbps---- s2                            s4 ----10Mbps---- h2
                  |  |                          |  |
                  |  |---5Mbps--- s3 ---5Mbps---|  |
                  |                                |
                  |                                |
-h2 ---10Mbps--- s5                                s7 ---10Mbps--- h3
+h3 ---10Mbps--- s5                                s7 ---10Mbps--- h4
                  |                                |
                  |----10Mbps---- s6 ----10Mbps----|
 ```
 
 <p align="center">
-  <img src="images/topology_all_good.jpeg" width="1000">
+  <img src="images/topology_all_good.png" width="1000">
 </p>
 
 ## Testing
