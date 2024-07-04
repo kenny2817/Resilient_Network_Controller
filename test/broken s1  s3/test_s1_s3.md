@@ -1,8 +1,8 @@
-# SCENARIO -> BROKEN S1 S6
+# SCENARIO -> BROKEN S1 S3
 
 ## TOPOLOGY
 <p align="center">
-  <img src="../../images/topology_all_good.jpeg" width="1000">
+  <img src="../../images/topology_s1_s3.png" width="1000">
 </p>
 
 ## SETUP
