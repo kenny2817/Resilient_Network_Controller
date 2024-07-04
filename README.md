@@ -156,12 +156,12 @@ sudo ovs-vsctl set-controller s6 tcp:127.0.0.1:6633
 
 ---
 
-- [all good](test/all-good/test_all_good.md)
-- [broken s1](test/broken-s1/test_s1.md)
-- [broken s3](test/broken-s3/test_s3.md)
-- [broken s6](test/broken-s6/test_s6.md)
-- [broken s1 s3](test/broken-s1-s3/test_s1_s3.md)
-- [broken s1 s6](test/broken-s1-s6/test_s1_s6.md)
-- [broken s3 s6](test/broken-s3-s6/test_s3_s6.md)
+- [all good](test/all%20good/test_all_good.md)
+- [broken s1](test/broken%20s1/test_s1.md)
+- [broken s3](test/broken%20s3/test_s3.md)
+- [broken s6](test/broken%20s6/test_s6.md)
+- [broken s1 s3](test/broken%20s1%20s3/test_s1_s3.md)
+- [broken s1 s6](test/broken%20s1%20s6/test_s1_s6.md)
+- [broken s3 s6](test/broken%20s3%20s6/test_s3_s6.md)
     
 </details>
