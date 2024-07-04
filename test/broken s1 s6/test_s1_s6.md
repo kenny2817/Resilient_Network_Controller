@@ -2,7 +2,7 @@
 
 ## TOPOLOGY
 <p align="center">
-  <img src="../../images/topology_all_good.jpeg" width="1000">
+  <img src="../../images/topology_s1_s6.png" width="1000">
 </p>
 
 ## SETUP
