@@ -49,6 +49,14 @@ To start the network and the controller, simply execute the script:
 ```bash
 ./run.sh
 ```
+
+<details>
+<summary>output</summary>
+    <p align="center">
+      <img src="test/run_output.png" width="600">
+    </p>
+</details>
+
 This script will
 - handle setting the necessary permissions for the various scripts
 - converting .sh files to Unix format
@@ -66,8 +74,22 @@ there are 7 switches (s) that create 3 channels
 3.  dual channel on s2 - s3 - s4 --> 5Mbps per channel. All TCP, ICMP, and UDP messages with unspecified ports pass through here
 
 ## Graphical Representation
+
+```
+                   |---10Mbps--- s1 ---10Mbps---|
+                   |                            |
+h0 ----10Mbps---- s2                            s4 ----10Mbps---- h1
+                 |  |                          |  |
+                 |  |---5Mbps--- s3 ---5Mbps---|  |
+                 |                                |
+                 |                                |
+h2 ---10Mbps--- s5                                s7 ---10Mbps--- h3
+                 |                                |
+                 |----10Mbps---- s6 ----10Mbps----|
+```
+
 <p align="center">
-  <img src="images/bash network.png" width="600">
+  <img src="images/topology_all_good.jpeg" width="1000">
 </p>
 
 ## Testing
@@ -128,30 +150,18 @@ sudo ovs-vsctl set-controller s6 tcp:127.0.0.1:6633
 
 </details>
 
+
+<details>
+<summary>test outputs</summary>
+
 ---
 
-```
-                   |---10Mbps--- s1 ---10Mbps---|
-                   |                            |
-h0 ----10Mbps---- s2                            s4 ----10Mbps---- h1
-                 |  |                          |  |
-                 |  |---5Mbps--- s3 ---5Mbps---|  |
-                 |                                |
-                 |                                |
-h2 ---10Mbps--- s5                                s7 ---10Mbps--- h3
-                 |                                |
-                 |----10Mbps---- s6 ----10Mbps----|
-```
-```
-         ------ s0 ------ 
-         |              | 
-         |              | 
-h0 ---- s1 ---- s2 ---- s3 ---- h1
-         |              |
-         |              |
-h2 ---- s4 ---- s6 ---- s6 ---- h3
-```
-
-
-
-
+- [all good](test/all-good/test_all_good.md)
+- [broken s1](test/broken-s1/test_s1.md)
+- [broken s3](test/broken-s3/test_s3.md)
+- [broken s6](test/broken-s6/test_s6.md)
+- [broken s1 s3](test/broken-s1-s3/test_s1_s3.md)
+- [broken s1 s6](test/broken-s1-s6/test_s1_s6.md)
+- [broken s3 s6](test/broken-s3-s6/test_s3_s6.md)
+    
+</details>
