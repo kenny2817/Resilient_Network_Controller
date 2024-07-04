@@ -1,4 +1,4 @@
-# SCENARIO -> BROKEN S1 S6
+# SCENARIO -> BROKEN S3 S6
 
 ## TOPOLOGY
 <p align="center">
