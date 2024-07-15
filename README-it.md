@@ -94,6 +94,8 @@ h3 ---10Mbps--- s5                                s7 ---10Mbps--- h4
 
 ## Testing
 
+[Video demo](https://youtu.be/SWiC3gSeuXk)
+
 <details>
 <summary>Comandi Mininet per Verificare il Corretto Funzionamento</summary>
 

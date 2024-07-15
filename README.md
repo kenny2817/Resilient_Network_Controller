@@ -94,6 +94,8 @@ h3 ---10Mbps--- s5                                s7 ---10Mbps--- h4
 
 ## Testing
 
+[Video demo](https://youtu.be/SWiC3gSeuXk)
+
 <details>
 <summary>Mininet Commands to Verify Correct Operation</summary>
 
